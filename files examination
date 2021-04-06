@@ -10,31 +10,33 @@ import zipfile
 #opdracht 1
 def clean_cache():
     try:
-        os.mkdir('C://Users//Bressers//files//cache')
+        os.mkdir('cache')
         return "cache created"
     except FileExistsError:
-        os.remove('C://Users//Bressers//files//cache')
-        return "cache removed"
+        try:
+            os.remove('cache')
+            return "cache removed"
+        except PermissionError:
+            return "no permisson"
+
+
 
 f=clean_cache()
 print(f)
 
 #opdracht 2
-def cache_zip(path):
-    with zipfile.ZipFile(path) as zip_ref:
-        zip_ref.extractall('C://Users//Bressers//files//cache')
-        return "unzipped files"
+def cache_zip(my_path,self):
+    with zipfile.ZipFile(my_path+'/data.zip') as zip_ref:
+        zip_ref.extractall('/cache')
 
-unzip = cache_zip('C://Users//Bressers//files//data.zip') 
-print(unzip)
-
+real_path = os.path.abspath('files')
 
 #opdracht 3
 def cache_files():
     my_list = []
-    list_files = os.listdir('C://Users//Bressers//files//cache')
+    list_files = os.listdir('/cache')
     for num in list_files:
-        my_list.append(os.path.join('C:\\Users\\Bressers\\files\\cache',num))
+        my_list.append(os.path.join('/cache',num))
     return my_list
 
 m_list = cache_files()
@@ -47,10 +49,8 @@ def find_password(m_list):
                 for lines in filee:
                     for word in line.split():
                         if "password" in lines:
-                            return lines
+                            password = lines[lines.find(" ") + 1 :]
+                            return password
 
 password = find_password(m_list)
 print(password)
-
-
-
