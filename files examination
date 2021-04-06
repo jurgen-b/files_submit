@@ -1,0 +1,56 @@
+__winc_id__ = 'ae539110d03e49ea8738fd413ac44ba8'
+__human_name__ = 'files'
+
+__winc_id__ = 'ae539110d03e49ea8738fd413ac44ba8'
+__human_name__ = 'files'
+
+import os.path
+import zipfile
+
+#opdracht 1
+def clean_cache():
+    try:
+        os.mkdir('C://Users//Bressers//files//cache')
+        return "cache created"
+    except FileExistsError:
+        os.remove('C://Users//Bressers//files//cache')
+        return "cache removed"
+
+f=clean_cache()
+print(f)
+
+#opdracht 2
+def cache_zip(path):
+    with zipfile.ZipFile(path) as zip_ref:
+        zip_ref.extractall('C://Users//Bressers//files//cache')
+        return "unzipped files"
+
+unzip = cache_zip('C://Users//Bressers//files//data.zip') 
+print(unzip)
+
+
+#opdracht 3
+def cache_files():
+    my_list = []
+    list_files = os.listdir('C://Users//Bressers//files//cache')
+    for num in list_files:
+        my_list.append(os.path.join('C:\\Users\\Bressers\\files\\cache',num))
+    return my_list
+
+m_list = cache_files()
+
+
+#opdracht 4
+def find_password(m_list):
+        for line in m_list:
+            with open(line) as filee:
+                for lines in filee:
+                    for word in line.split():
+                        if "password" in lines:
+                            return lines
+
+password = find_password(m_list)
+print(password)
+
+
+
