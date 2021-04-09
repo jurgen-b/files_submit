@@ -7,36 +7,41 @@ __human_name__ = 'files'
 import os.path
 import zipfile
 
+current_dict = os.path.abspath('files')
+cache_path = current_dict + '\\cache'
+zip_path = current_dict + '\\data.zip'
+
+
 #opdracht 1
 def clean_cache():
     try:
-        os.mkdir('cache')
+        os.mkdir(current_dict+'\\cache')
         return "cache created"
     except FileExistsError:
         try:
-            os.remove('cache')
+            os.remove(current_dict+'\\cache')
             return "cache removed"
         except PermissionError:
             return "no permisson"
 
-
-
 f=clean_cache()
 print(f)
 
-#opdracht 2
-def cache_zip(my_path,self):
-    with zipfile.ZipFile(my_path+'/data.zip') as zip_ref:
-        zip_ref.extractall('/cache')
+#opdracht 2 
+def cache_zip(cache_path,zip_path):
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(cache_path)
+        return("zip unpacked")
 
-real_path = os.path.abspath('files')
+open_zip = cache_zip(cache_path,zip_path)
+print(open_zip)
 
 #opdracht 3
 def cache_files():
     my_list = []
-    list_files = os.listdir('/cache')
+    list_files = os.listdir('\\cache')
     for num in list_files:
-        my_list.append(os.path.join('/cache',num))
+        my_list.append(os.path.join('\\cache',num))
     return my_list
 
 m_list = cache_files()
