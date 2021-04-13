@@ -1,61 +1,51 @@
 __winc_id__ = 'ae539110d03e49ea8738fd413ac44ba8'
 __human_name__ = 'files'
 
-__winc_id__ = 'ae539110d03e49ea8738fd413ac44ba8'
-__human_name__ = 'files'
+from zipfile import ZipFile
+import os
+import shutil
 
-import os.path
-import zipfile
-
-current_dict = os.path.abspath('files')
-cache_path = current_dict + '\\cache'
-zip_path = current_dict + '\\data.zip'
-
+files_path = os.getcwd() #waarom niet in de files map?
+cache_path = files_path+"\\cache"
+zip_path = files_path+"\\files\\data.zip"
 
 #opdracht 1
 def clean_cache():
-    try:
-        os.mkdir(current_dict+'\\cache')
-        return "cache created"
-    except FileExistsError:
-        try:
-            os.remove(current_dict+'\\cache')
-            return "cache removed"
-        except PermissionError:
-            return "no permisson"
+    if not os.path.exists(cache_path):
+        os.makedirs(cache_path)
+    else:
+        shutil.rmtree(cache_path)    
 
-f=clean_cache()
-print(f)
 
-#opdracht 2 
-def cache_zip(cache_path,zip_path):
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall(cache_path)
-        return("zip unpacked")
+#opdracht 2
+def cache_zip(zip_path,cache_path):
+    clean_cache()
+    with ZipFile (zip_path, 'r') as zipObj:
+        zipObj.extractall(cache_path)
 
-open_zip = cache_zip(cache_path,zip_path)
-print(open_zip)
+unzip = cache_zip(zip_path,cache_path)
 
 #opdracht 3
-def cache_files():
+def cached_files():
     my_list = []
-    list_files = os.listdir('\\cache')
+    list_files = os.listdir(cache_path)
     for num in list_files:
-        my_list.append(os.path.join('\\cache',num))
+        path_num = cache_path+"\\"+num
+        my_list.append(path_num)
     return my_list
 
-m_list = cache_files()
+cache_list = cached_files()
 
 
 #opdracht 4
-def find_password(m_list):
-        for line in m_list:
-            with open(line) as filee:
-                for lines in filee:
-                    for word in line.split():
+def find_password(cache_list):
+        for line in cache_list:
+            with open(line) as files:
+                for lines in files:
+                    for words in line.split():
                         if "password" in lines:
-                            password = lines[lines.find(" ") + 1 :]
+                            password = lines[lines.find(" ") + 1 : -1]
                             return password
 
-password = find_password(m_list)
+password = find_password(cache_list)
 print(password)
